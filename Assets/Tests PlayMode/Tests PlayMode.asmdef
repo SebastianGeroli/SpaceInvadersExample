@@ -1,6 +1,10 @@
 ﻿{
     "name": "TestsPlayMode",
-    "optionalUnityReferences": [
-        "TestAssemblies"
-    ]
+   "references": [
+    "NewAssembly","Assembly-CSharp"
+],
+"optionalUnityReferences": [
+    "TestAssemblies"
+],
+"includePlatforms": []
 }
