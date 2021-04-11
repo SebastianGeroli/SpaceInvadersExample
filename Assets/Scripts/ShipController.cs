@@ -15,6 +15,9 @@ public class ShipController : MonoBehaviour
     private float minSpawnX = -8f, maxSpawnX = 8f;
     public float speed = 1f;
     private Vector2 newVelocity;
+    [SerializeField]
+    private Transform[] enemies;
+    private float dangerDistance = 3f;
 
     // Se llama a Start antes de la primera actualización del cuadro
 
@@ -22,6 +25,7 @@ public class ShipController : MonoBehaviour
     {
         RandomSpawn();
         rigidbody = GetComponent<Rigidbody2D>();
+        StartCoroutine(DoCheck());
     }
 
     // Update se llama una vez por frame
@@ -50,5 +54,26 @@ public class ShipController : MonoBehaviour
         Vector2 spawnPos = transform.position;
         spawnPos.x = Random.Range(minSpawnX, maxSpawnX);
         transform.position = spawnPos;
+    }
+
+    bool ProximityCheck()
+    {
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            if (Vector3.Distance(transform.position, enemies[i].transform.position) < dangerDistance)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    IEnumerator DoCheck()
+    {
+        for (; ; )
+        {
+            ProximityCheck();
+            yield return new WaitForSeconds(.1f);
+        }
     }
 }
