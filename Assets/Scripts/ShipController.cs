@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(Translator))]
 public class ShipController : MonoBehaviour
 {
     private new Rigidbody2D rigidbody;
-
     private Vector2 movement;
     [SerializeField]
     private float maxSpeed = 7f;
@@ -18,6 +17,7 @@ public class ShipController : MonoBehaviour
     [SerializeField]
     private Transform[] enemies;
     private float dangerDistance = 3f;
+    private Translator translator;
 
     // Se llama a Start antes de la primera actualización del cuadro
 
@@ -25,6 +25,7 @@ public class ShipController : MonoBehaviour
     {
         RandomSpawn();
         rigidbody = GetComponent<Rigidbody2D>();
+        translator = GetComponent<Translator>();
         StartCoroutine(DoCheck());
     }
 
@@ -43,10 +44,10 @@ public class ShipController : MonoBehaviour
         {
             newVelocity = rigidbody.velocity;
             newVelocity.x = newVelocity.x > 0 ? 5f : -5f;
-            rigidbody.velocity = newVelocity;
+            translator.Move(newVelocity);
             return;
         }
-        rigidbody.AddForce(movement * speed * 5f);
+        translator.Move(movement * speed * 5f);
     }
 
     void RandomSpawn()
@@ -76,4 +77,5 @@ public class ShipController : MonoBehaviour
             yield return new WaitForSeconds(.1f);
         }
     }
+
 }
